@@ -16,6 +16,7 @@ namespace bulls_and_cows {
     {
         std::cout << "TODO:\n"
                      "    Create a board with a randomly generated secret code\n"
+         // je fait appel a cette fonction (qui ne marche pas encore) -->   Board create_board(const GameOptions& game_options)
                      "    DO\n"
                      "       Display the board and the list of attempts so far\n"
                      "       Ask the user to make another attempt\n"
