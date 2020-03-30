@@ -14,17 +14,42 @@ namespace bulls_and_cows {
 
     void user_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout << "TODO:\n"
-                     "    Create a board with a randomly generated secret code\n"
-         // je fait appel a cette fonction (qui ne marche pas encore) -->   Board create_board(const GameOptions& game_options)
-                     "    DO\n"
-                     "       Display the board and the list of attempts so far\n"
-                     "       Ask the user to make another attempt\n"
-                     "       Compare the user's attempt with the secret code and deduce the number of bulls and cows\n"
-                     "       Add the user's attempt to the list of attempts of the board\n"
-                     "    WHILE not end of game\n"
-                     "    Display the board and the list of attempts so far\n"
-                     "    Display a message telling if the user won or lost\n";
+        // Create a board with a randomly generated secret code\n"
+        Board mon_board{};
+        AttemptAndFeedback my_feedback{};
+        mon_board = create_board(game_options);
+
+         do
+        {
+            std::cout << "\n";
+            display_board(std::cout, game_options, mon_board);
+
+            my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, mon_board);
+
+            while (!validate_attempt(game_options, my_feedback.attempt))
+            {
+                std::cout << "Your attempt is not valid, try again\n";
+                my_feedback.attempt = ask_attempt(std::cout, std::cin, game_options, mon_board);
+            }
+
+            my_feedback.feedback = compare_attempt_with_secret_code(my_feedback.attempt, mon_board.secret_code);
+            mon_board.attempts_and_feedbacks.push_back(my_feedback);
+
+        } while (!(is_end_of_game(game_options, mon_board)) && !(is_win(game_options, mon_board)));
+
+         std::cout << "\n";
+        display_board(std::cout, game_options, mon_board);
+
+        if (is_win(game_options, mon_board))
+        {
+            std::cout << "\n"
+                      << "You won ! The secret code is : " << mon_board.secret_code.value << "\n";
+        }
+        else
+        {
+            std::cout << "\n"
+                      << "You lost ! The secret code is : " << mon_board.secret_code.value << "\n";
+        }
     }
 
     void computer_plays_against_computer(const GameOptions& game_options)

@@ -30,22 +30,22 @@ namespace bulls_and_cows {
         std::vector<AttemptAndFeedback> attempts_and_feedbacks{}; // List of attempts of the user
     };
 
-    // Create a board and with a new random secret code composed of allowed characters
+    // Create a board and with a new random secret code composed of allowed characters     Fait
     Board create_board(const GameOptions& game_options);
 
-    // Validate that a user-entered code contains proper number of allowed characters
-    bool validate_attempt(const GameOptions& game_options, const Code& attempt);
+    // Validate that a user-entered code contains proper number of allowed characters      Fait
+    bool validate_attempt(const GameOptions& game_options, const Code& attempt); 
 
     // Compare a user-entered code with the secret code and give the corresponding number of bulls and cows
     Feedback compare_attempt_with_secret_code(const Code& attempt, const Code& secret_code);
 
-    // Test if this is the end of the game
+    // Test if this is the end of the game                     Fait
     bool is_end_of_game(const GameOptions& game_options, const Board& board);
 
-    // Test if the last attempt is a win
+    // Test if the last attempt is a win                        fait
     bool is_win(const GameOptions& game_options, const Board& board);
 
-    // Display the scret code and the list of attempts of the board
+    // Display the scret code and the list of attempts of the board          Fait
     void display_board(std::ostream& output_stream, const GameOptions& game_options, const Board& board);
 
     // Ask the user to provide another attempt
