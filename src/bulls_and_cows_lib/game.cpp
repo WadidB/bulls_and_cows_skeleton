@@ -9,6 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <thread>
+#include <windows.h>
 
 namespace bulls_and_cows {
 
@@ -52,26 +53,42 @@ namespace bulls_and_cows {
         }
     }
 
-    void computer_plays_against_computer(const GameOptions& game_options)
+   void computer_plays_against_computer(const GameOptions& game_options)
     {
-        std::cout
-            << "TODO:\n"
-               "    Create a board with a randomly generated secret code\n"
-               "    Generate the list of all the possible codes\n"
-               "    DO\n"
-               "       Display the board and the list of attempts so far\n"
-               "       Display the number of remaining possible codes so far\n"
-               "       Wait for 2 seconds\n"
-               "       Pick a random attempt among in the list of remaining possible codes\n"
-               "       Compare the computer's attempt with the secret code and deduce the number of bulls and cows\n"
-               "       Add the computer's attempt to the list of attempts of the board\n"
-               "       Remove all the codes that are incompatible with the attempt's feedback from the list of "
-               "possible codes\n"
-               "    WHILE not end of game\n"
-               "    Display the board and the list of attempts so far\n"
-               "    Display a message telling if the computer won or lost\n";
-    }
+        Board IAboard = create_board(game_options); // Create a board with a randomly generated secret code
+        PossibleSolutions all_codes =
+            generate_all_possible_codes(game_options); // Generate the list of all the possible codes
+        AttemptAndFeedback IA_af{};
 
+        do
+        {
+            std::cout << "\n";
+            display_board(std::cout, game_options, IAboard); // Display the board and the list of attempts so far
+
+            std::cout << "\n" << all_codes.codes.size() << " Remaining possible codes.\n";
+
+            Sleep(2000); // Wait for 2 seconds
+
+            IA_af.attempt = pick_random_attempt(all_codes);
+            IA_af.feedback = compare_attempt_with_secret_code(IA_af.attempt, IAboard.secret_code);
+            IAboard.attempts_and_feedbacks.push_back(IA_af);
+
+        } while (!(is_end_of_game(game_options, IAboard)) && !(is_win(game_options, IAboard)));
+
+        std::cout << "\n";
+        display_board(std::cout, game_options, IAboard);
+
+        if (is_win(game_options, IAboard))
+        {
+            std::cout << "\n"
+                      << "Computer won ! The secret code is : " << IAboard.secret_code.value << "\n";
+        }
+        else
+        {
+            std::cout << "\n"
+                      << "Computer lost ! The secret code is : " << IAboard.secret_code.value << "\n";
+        }
+    }
     void configure_game_options(GameOptions& game_options)
     {
         std::cout << "TODO:\n"
